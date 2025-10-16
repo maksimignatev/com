@@ -11,6 +11,7 @@ extend({ Container, Graphics });
 const BG_COLOR = 0x8B9A6D; // Grassy terrain color
 const FIELD_COLOR = 0xC4B876; // Wheat field color
 const DIRT_ROAD_COLOR = 0x8B7355; // Dirt road/path color
+const FIELD_PATTERN_SEED = 7; // Seed for field type variation
 
 export const WorldStage: React.FC = () => {
   // Select primitive values and functions separately to avoid selector instability
@@ -187,7 +188,7 @@ export const WorldStage: React.FC = () => {
               const { x: sx, y: sy } = worldToScreen(tx, ty);
               if (sx < -200 || sx > viewWidth + 200 || sy < -200 || sy > viewHeight + 200) continue;
               
-              const fieldType = (Math.abs(tx + ty * 7) % 3);
+              const fieldType = (Math.abs(tx + ty * FIELD_PATTERN_SEED) % 3);
               let color = FIELD_COLOR;
               if (fieldType === 0) color = 0xA3B876; // Darker field
               if (fieldType === 1) color = 0xD4C896; // Lighter field
@@ -324,8 +325,10 @@ export const WorldStage: React.FC = () => {
     ? sim.persons.slice(0, 120).map(p => {
       const farm = sim.farms.find(f => f.id === p.farmId);
       if (!farm) return null;
-      const jitterX = (Math.random()-0.5)*14;
-      const jitterY = (Math.random()-0.5)*14;
+      // Use deterministic position based on person ID to avoid jitter
+      const hash = p.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      const jitterX = ((hash % 100) / 100 - 0.5) * 14;
+      const jitterY = (((hash * 7) % 100) / 100 - 0.5) * 14;
       const { x, y } = worldToScreen(farm.x + jitterX, farm.y + jitterY);
       return (
         <pixiGraphics
