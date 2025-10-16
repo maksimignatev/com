@@ -7,7 +7,7 @@ export const OverlayPanel: React.FC = () => {
   return (
     <div className="panel">
       <h2>Overlay</h2>
-      <select value={overlay} onChange={e => setOverlay(e.target.value as any)}>
+      <select value={overlay} onChange={e => setOverlay(e.target.value as 'none' | 'grain' | 'morale' | 'famineRisk')}>
         <option value="none">None</option>
         <option value="grain">Grain Output</option>
         <option value="morale">Morale</option>

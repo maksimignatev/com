@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSimStore } from '../store/simStore';
-import { ERAS } from '../simulation/eras';
 
 export const EraPanel: React.FC = () => {
   const time = useSimStore(s => s.time);

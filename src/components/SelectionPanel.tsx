@@ -5,7 +5,7 @@ export const SelectionPanel: React.FC = () => {
   const selection = useSimStore(s => s.selection);
   const sim = useSimStore(s => s.sim);
 
-  let content: JSX.Element = <span>None</span>;
+  let content: React.ReactNode = <span>None</span>;
   if (selection) {
     if (selection.type === 'farm') {
       const farm = sim.farms.find(f => f.id === selection.id);
