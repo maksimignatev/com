@@ -1,25 +1,28 @@
-import React, { useState } from "react";
-import { LevelManager } from "./LevelManager";
-import { WorldStage } from "./components/WorldStage";
-import { OverlayHUD } from "./components/OverlayHUD";
+import React, { useEffect } from 'react';
+import { WorldStage } from './pixi/WorldStage';
+import { useSimStore } from './store/simStore';
+import { HUD } from './components/HUD';
+import { OverlayPanel } from './components/OverlayPanel';
+import { EraPanel } from './components/EraPanel';
+import { SelectionPanel } from './components/SelectionPanel';
+import { LevelPanel } from './components/LevelPanel';
 
-const levelManager = new LevelManager();
-
-export const App: React.FC = () => {
-  const [selection, setSelection] = useState<{ id: string; name: string } | null>(null);
+const App: React.FC = () => {
+  const init = useSimStore(s => s.initialize);
+  useEffect(() => { init(); }, [init]);
 
   return (
-    <>
-      <WorldStage
-        levelManager={levelManager}
-        onSelectionChange={setSelection}
-      />
-      <OverlayHUD
-        levelManager={levelManager}
-        selection={selection}
-        scale={levelManager.getInterpolatedScale()}
-        userZoomFactor={1} // We could expose from camera hook if needed in HUD
-      />
-    </>
+    <div className="appRoot">
+      <WorldStage />
+      <div className="hudStack">
+        <EraPanel />
+        <LevelPanel />
+        <OverlayPanel />
+        <SelectionPanel />
+        <HUD />
+      </div>
+    </div>
   );
 };
+
+export default App;
