@@ -3,7 +3,6 @@ import { useSimStore } from '../store/simStore';
 import { LEVEL_SEQUENCE } from '../simulation/levels';
 
 export const LevelPanel: React.FC = () => {
-  const currentLevel = useSimStore(s => s.currentLevel);
   const targetLevel = useSimStore(s => s.targetLevel);
   const setLevel = useSimStore(s => s.setLevel);
 
